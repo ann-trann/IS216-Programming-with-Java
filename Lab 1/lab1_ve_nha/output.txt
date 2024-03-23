@@ -1,0 +1,7 @@
+Ngay 1: Nhiet do trung binh=69.98, Nhiet do cao nhat=78.30, Nhiet do thap nhat=67.00
+Ngay 2: Nhiet do trung binh=70.42, Nhiet do cao nhat=78.70, Nhiet do thap nhat=67.20
+Ngay 3: Nhiet do trung binh=70.10, Nhiet do cao nhat=78.30, Nhiet do thap nhat=67.00
+Ngay 4: Nhiet do trung binh=70.43, Nhiet do cao nhat=78.70, Nhiet do thap nhat=67.10
+Ngay 5: Nhiet do trung binh=69.68, Nhiet do cao nhat=78.00, Nhiet do thap nhat=65.00
+Ngay 6: Nhiet do trung binh=70.00, Nhiet do cao nhat=77.70, Nhiet do thap nhat=67.30
+Ngay 7: Nhiet do trung binh=70.42, Nhiet do cao nhat=78.70, Nhiet do thap nhat=67.20
