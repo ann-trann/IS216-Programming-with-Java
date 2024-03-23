@@ -1,0 +1,7 @@
+Tham khao ve doc file:
+
+import java.io.FileReader;
+
+String file1 = "name";
+BufferedReader reader1 = new BufferedReader(new FileReader(file1));
+
