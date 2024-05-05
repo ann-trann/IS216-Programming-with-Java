@@ -1,0 +1,70 @@
+Cau 3:
+class Customer implements Comparable<Customer> {
+    String name;
+    int sales;
+
+........
+}
+
+class Congty{
+    ArrayList<String> Nhanvien = new ArrayList<>();
+    HashSet<String> SP = new HashSet<>();
+    HashMap<String,Integer> SLTenNV = new HashMap<>();
+
+        .........
+   
+
+}
+
+
+
+Cau 4:
+class Card {
+    String bac;
+    String chat_bai;
+
+    Card(String x, String y) {
+        bac = x;
+        chat_bai = y;
+    }
+}
+
+class Deck {
+    public ArrayList<Card> cards;
+
+    public Deck() {
+        cards = new ArrayList<Card>();
+        String[] bac_bai = { "At", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Boi", "Dam", "Gia" };
+        String[] chat_bai = { "Bich", "Chuon", "Ro", "Co" };
+        for (String bac : bac_bai) {
+            for (String chat : chat_bai) {
+                Card card = new Card(bac, chat);
+                cards.add(card);
+            }
+        }
+    }
+
+    void suffle() {
+        Collections.shuffle(cards);
+    }
+}
+
+
+Cau 5:
+class Word {
+        private String word;
+        private String meaning;
+        private String type;
+        private String note;
+.......
+}
+
+class Dictionary {
+        private TreeMap<String, Word> words;
+
+        public Dictionary() {
+            words = new TreeMap<String, Word>();
+        }
+
+        .........
+    }

@@ -1,0 +1,123 @@
+-- Class Sach
+
+public class Sach {
+    int MaSach;
+    String TenSach,TacGia,NXB;
+    int Gia;
+
+    public Sach() {
+    }
+
+    public Sach(int MaSach, String TenSach, String TacGia, String NXB, int Gia) {
+        this.MaSach = MaSach;
+        this.TenSach = TenSach;
+        this.TacGia = TacGia;
+        this.NXB = NXB;
+        this.Gia = Gia;
+    }
+
+    public int getMaSach() {
+        return MaSach;
+    }
+
+    public String getTenSach() {
+        return TenSach;
+    }
+
+    public String getTacGia() {
+        return TacGia;
+    }
+
+    public String getNXB() {
+        return NXB;
+    }
+
+    public int getGia() {
+        return Gia;
+    }
+
+    public void setMaSach(int MaSach) {
+        this.MaSach = MaSach;
+    }
+
+    public void setTenSach(String TenSach) {
+        this.TenSach = TenSach;
+    }
+
+    public void setTacGia(String TacGia) {
+        this.TacGia = TacGia;
+    }
+
+    public void setNXB(String NXB) {
+        this.NXB = NXB;
+    }
+
+    public void setGia(int Gia) {
+        this.Gia = Gia;
+    }
+    
+     
+    
+}
+
+
+-- class DSSach
+
+public class DSSach {
+    public List<Sach> dssach;
+
+    public DSSach() {
+        dssach = new ArrayList<Sach>();
+    }
+
+    public DSSach(List<Sach> dssach) {
+        this.dssach = dssach;
+    }
+    public int SLSach()
+    {
+        return this.dssach.size();
+    }
+    public boolean TimSach (int MaSach)
+    {
+        for(Sach s: dssach)
+        {
+            if(s.getMaSach()==MaSach)
+                return true;
+        }
+        return false;
+    }
+    public int TimViTriSach(int MaSach)
+    {
+        for(Sach s : dssach)
+        {
+            if(s.getMaSach()== MaSach)
+                return dssach.indexOf(s);
+        }
+        return -1;
+    }
+    public Sach TimSachTheoViTri(int i)
+    {
+        return this.dssach.get(i);
+    }
+    public void Themsach(Sach s)
+    {
+        if(this.TimSach(s.getMaSach())==false)
+            dssach.add(s);
+        else
+            JOptionPane.showConfirmDialog(null,"Không thêm được do trùng mã sách","OK",JOptionPane.CLOSED_OPTION);
+    }
+    public void XoaSach (int MaSach)
+    {
+        for(Sach s : dssach)
+        {
+            if(s.getMaSach()==MaSach)
+            {
+                dssach.remove(dssach.indexOf(s));
+                dssach.remove(s);
+                JOptionPane.showConfirmDialog(null,"Đã xoá sách","OK", JOptionPane.CLOSED_OPTION);
+                break;
+            }
+        }
+    }
+}
+
