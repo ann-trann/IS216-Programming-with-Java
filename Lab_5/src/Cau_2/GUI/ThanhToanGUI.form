@@ -6,7 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -45,9 +45,9 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="cb_gtinh" pref="160" max="32767" attributes="0"/>
-                                  <Component id="cb_gtinh1" pref="160" max="32767" attributes="0"/>
-                                  <Component id="txt_kluan" max="32767" attributes="0"/>
+                                  <Component id="txt_ketluan" pref="160" max="32767" attributes="0"/>
+                                  <Component id="txt_tenbn" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="txt_mabn" alignment="1" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace pref="18" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -77,15 +77,15 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lb_mabn" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lb_mabn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_mabn" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="date_nkham" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lb_nkham" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                          <Component id="cb_gtinh" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lb_nkham" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -93,12 +93,12 @@
                   <Component id="lb_tenbn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lb_yckham" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txt_yckham" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="cb_gtinh1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="txt_tenbn" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lb_kluan" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txt_kluan" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="txt_ketluan" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="lb_tongtien" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txt_tongtien" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
@@ -111,7 +111,7 @@
               <Component id="jScrollPane1" min="-2" pref="111" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jButton1" min="-2" pref="40" max="-2" attributes="0"/>
-              <EmptySpace pref="10" max="32767" attributes="0"/>
+              <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -159,22 +159,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txt_yckham">
     </Component>
-    <Component class="javax.swing.JComboBox" name="cb_gtinh">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Nam"/>
-            <StringItem index="1" value="N&#x1eef;"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -185,23 +169,7 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="date_nkham">
     </Component>
-    <Component class="javax.swing.JComboBox" name="cb_gtinh1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Nam"/>
-            <StringItem index="1" value="N&#x1eef;"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txt_kluan">
+    <Component class="javax.swing.JTextField" name="txt_ketluan">
     </Component>
     <Component class="javax.swing.JLabel" name="lb_dsdv_dakham">
       <Properties>
@@ -270,6 +238,10 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x110;&#xe3; thanh to&#xe1;n"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_tenbn">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_mabn">
     </Component>
   </SubComponents>
 </Form>

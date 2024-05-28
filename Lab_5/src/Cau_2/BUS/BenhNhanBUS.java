@@ -17,28 +17,15 @@ import java.sql.SQLException;
  * @author trant
  */
 public class BenhNhanBUS {
-     private BenhNhanDAO benhNhanDAO;
+    
+    private final BenhNhanDAO benhNhanDAO;
 
     public BenhNhanBUS() {
         benhNhanDAO = new BenhNhanDAO();
     }
-
-    public boolean addBenhNhan(BenhNhanDTO bn) throws SQLException {
-        
-        Connection con = OracleConnection.getInstance().getConnection();
-        
-        String selectSql = "SELECT MABN FROM BENHNHAN WHERE MABN = ?";
-        PreparedStatement selectStatement = con.prepareStatement(selectSql);
-        selectStatement.setString(1, bn.getMaBN());
-        
-        ResultSet resultSet = selectStatement.executeQuery();
-        
-        if (resultSet.next()) {
-            return false;
-        } else {
-            benhNhanDAO.insertBenhNhan(bn);
-            return true;
-        }
+    
+    public void addBenhNhan(BenhNhanDTO bn) throws SQLException {
+        benhNhanDAO.addBenhNhan(bn);
     }
     
     public String layTenBN(String mabn) throws SQLException{

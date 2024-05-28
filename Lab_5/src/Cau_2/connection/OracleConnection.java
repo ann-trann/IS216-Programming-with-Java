@@ -36,6 +36,11 @@ public class OracleConnection {
         final String url = "jdbc:oracle:thin:@localhost:1521:ORCL";
         final String username = "QLKB";
         final String password = "123";
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         connection = DriverManager.getConnection(url, username, password);
     }
 

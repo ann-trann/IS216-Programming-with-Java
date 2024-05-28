@@ -192,7 +192,7 @@ public class DatLichKhamGUI extends javax.swing.JFrame {
         boolean flag = true;
         
         try {
-            makb = khamBenhBUS.layMaKB();
+            makb = khamBenhBUS.newMaKB();
         } catch (SQLException ex) {
             Logger.getLogger(DatLichKhamGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -13,7 +13,7 @@ import java.util.List;
  * @author trant
  */
 public class DichVuBUS {
-    private DichVuDAO dichVuDAO;
+    private final DichVuDAO dichVuDAO;
 
     public DichVuBUS() {
         dichVuDAO = new DichVuDAO();
@@ -21,5 +21,13 @@ public class DichVuBUS {
 
     public List<String> layDSDV() throws SQLException {
         return dichVuDAO.DanhSachDichVu();
+    }
+    
+    public String layMaDV(String tenDV) throws SQLException {
+        return dichVuDAO.layMaDV(tenDV);
+    }
+    
+    public int layDonGia(String tenDV) throws SQLException {
+        return dichVuDAO.layDonGia(tenDV);
     }
 }

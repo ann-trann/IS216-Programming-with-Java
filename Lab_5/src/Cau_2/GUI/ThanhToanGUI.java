@@ -4,18 +4,98 @@
  */
 package Cau_2.GUI;
 
+import Cau_2.BUS.BenhNhanBUS;
+import Cau_2.BUS.KhamBenhBUS;
+import Cau_2.BUS.ThuPhiBUS;
+import Cau_2.DTO.KhamBenhDTO;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author trant
  */
 public class ThanhToanGUI extends javax.swing.JFrame {
 
+    private final BenhNhanBUS benhNhanBUS;
+    private final KhamBenhBUS khamBenhBUS;
+    private final ThuPhiBUS thuPhiBUS;
+    private String makb;
+    private String mabn;
+
     /**
      * Creates new form BenhNhanGUI
      */
     public ThanhToanGUI() {
+        this.benhNhanBUS = new BenhNhanBUS();
+        this.khamBenhBUS = new KhamBenhBUS();
+        this.thuPhiBUS = new ThuPhiBUS();
         initComponents();
+        
+        txt_mabn.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    try {
+                        hienThiTenBN();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatLichKhamGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        
+        date_nkham.getDateEditor().addPropertyChangeListener(
+        new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                if ("date".equals(e.getPropertyName())) {
+                    try {
+                        hienThiThongTinKB();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ChiTietKhamBenhGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
     }
+    
+    
+    public void hienThiTenBN() throws SQLException {
+        mabn = txt_mabn.getText();
+        String tenbn = benhNhanBUS.layTenBN(mabn);
+        if (tenbn != null) {
+            txt_tenbn.setText(tenbn);
+            txt_tenbn.setEditable(false);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Bệnh nhân chưa đăng ký", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            txt_tenbn.setText("");
+        }
+    }
+    
+    public void hienThiThongTinKB() throws SQLException{
+        LocalDate ngKham = date_nkham.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        makb = khamBenhBUS.layMaKB(mabn, ngKham);
+        KhamBenhDTO khamBenhDTO = khamBenhBUS.layThongTinKhamBenh(makb);
+        
+        String ketluan = khamBenhDTO.getKetLuan();
+        String yckham = khamBenhDTO.getYCKham();
+        txt_ketluan.setText(ketluan);
+        txt_yckham.setText(yckham);
+        
+        int tongTien = thuPhiBUS.layTongTien(makb);
+        txt_tongtien.setText(Integer.toString(tongTien));
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,17 +112,17 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         lb_yckham = new javax.swing.JLabel();
         lb_kluan = new javax.swing.JLabel();
         txt_yckham = new javax.swing.JTextField();
-        cb_gtinh = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         date_nkham = new com.toedter.calendar.JDateChooser();
-        cb_gtinh1 = new javax.swing.JComboBox<>();
-        txt_kluan = new javax.swing.JTextField();
+        txt_ketluan = new javax.swing.JTextField();
         lb_dsdv_dakham = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_dsdv_dakham = new javax.swing.JTable();
         lb_tongtien = new javax.swing.JLabel();
         txt_tongtien = new javax.swing.JTextField();
         checkb_dathanhtoan = new javax.swing.JCheckBox();
+        txt_tenbn = new javax.swing.JTextField();
+        txt_mabn = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,14 +141,8 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         lb_kluan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_kluan.setText("Kết luận");
 
-        cb_gtinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        cb_gtinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
-
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("Thanh toán");
-
-        cb_gtinh1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        cb_gtinh1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
 
         lb_dsdv_dakham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_dsdv_dakham.setText("Danh sách dịch vụ đã khám");
@@ -112,9 +186,9 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                                     .addComponent(lb_kluan))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cb_gtinh, 0, 160, Short.MAX_VALUE)
-                                    .addComponent(cb_gtinh1, 0, 160, Short.MAX_VALUE)
-                                    .addComponent(txt_kluan))
+                                    .addComponent(txt_ketluan, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                    .addComponent(txt_tenbn, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txt_mabn, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lb_yckham)
@@ -134,24 +208,24 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lb_mabn)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lb_mabn)
+                        .addComponent(txt_mabn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(date_nkham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lb_nkham, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_gtinh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(lb_nkham, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_tenbn)
                     .addComponent(lb_yckham)
                     .addComponent(txt_yckham, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_gtinh1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_tenbn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_kluan)
-                    .addComponent(txt_kluan, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_ketluan, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lb_tongtien)
                     .addComponent(txt_tongtien, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -162,10 +236,11 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -211,8 +286,6 @@ public class ThanhToanGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cb_gtinh;
-    private javax.swing.JComboBox<String> cb_gtinh1;
     private javax.swing.JCheckBox checkb_dathanhtoan;
     private com.toedter.calendar.JDateChooser date_nkham;
     private javax.swing.JButton jButton1;
@@ -225,7 +298,9 @@ public class ThanhToanGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lb_tongtien;
     private javax.swing.JLabel lb_yckham;
     private javax.swing.JTable tb_dsdv_dakham;
-    private javax.swing.JTextField txt_kluan;
+    private javax.swing.JTextField txt_ketluan;
+    private javax.swing.JTextField txt_mabn;
+    private javax.swing.JTextField txt_tenbn;
     private javax.swing.JTextField txt_tongtien;
     private javax.swing.JTextField txt_yckham;
     // End of variables declaration//GEN-END:variables
