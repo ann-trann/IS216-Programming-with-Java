@@ -149,4 +149,27 @@ public class KhamBenhDAO {
         
         return khamBenhDTO;
     }
+    
+    public boolean isThanhToan(String maKB) throws SQLException {
+        String sql = "SELECT THANHTOAN FROM KHAMBENH WHERE MAKB = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, maKB);
+        ResultSet rs = ps.executeQuery();
+        int thanhtoan = 0;
+        if (rs.next()) {
+            thanhtoan = rs.getInt("THANHTOAN");
+        }
+        
+        if (thanhtoan == 1)
+            return true;
+        else
+            return false;
+    }
+    
+    public void updateThanhToan(String maKB) throws SQLException{
+        String sql = "UPDATE KHAMBENH SET THANHTOAN = 1 WHERE MAKB = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, maKB);
+        ps.executeUpdate();
+    }
 }

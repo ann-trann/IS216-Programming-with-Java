@@ -61,4 +61,12 @@ public class KhamBenhBUS {
     public KhamBenhDTO layThongTinKhamBenh(String maKB) throws SQLException {
         return khamBenhDAO.ThongTinKhamBenh(maKB);
     }
+    
+    public boolean isThanhToan(String maKB) throws SQLException {
+        return khamBenhDAO.isThanhToan(maKB);
+    }
+    
+    public void updateThanhToan(String maKB) throws SQLException{
+        khamBenhDAO.updateThanhToan(maKB);
+    }
 }

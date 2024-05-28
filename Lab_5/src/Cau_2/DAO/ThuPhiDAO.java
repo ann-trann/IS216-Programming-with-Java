@@ -4,8 +4,10 @@
  */
 package Cau_2.DAO;
 
+import Cau_2.DTO.DichVuDTO;
 import Cau_2.DTO.ThuPhiDTO;
 import Cau_2.connection.OracleConnection;
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +28,7 @@ public class ThuPhiDAO {
     }
     
     public void insertThuPhi(ThuPhiDTO tp) throws SQLException {
-        String sql = "INSERT INTO THUPHI(MaKB, MaDV, SoLuong, ThanhTien) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO THUPHI(MaDV, SoLuong, ThanhTien) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, tp.getMaKB());
         ps.setString(2, tp.getMaDV());
@@ -53,5 +55,19 @@ public class ThuPhiDAO {
         }
         
         return tongTien;
+    }
+    
+    public List<ThuPhiDTO> layDichVu(String maKB) throws SQLException {
+        List<ThuPhiDTO> dsThuPhi = new ArrayList<>();
+        String sql = "SELECT TENDV, SOLUONG, THANHTIEN FROM THUPHI tp "
+                + "JOIN DICHVU dv ON dv.MADV = tp.MADV WHERE MAKB = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, maKB);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ThuPhiDTO dichVu = new ThuPhiDTO(rs.getString(1), rs.getInt(2), rs.getInt(3));
+            dsThuPhi.add(dichVu);
+        }
+        return dsThuPhi;
     }
 }

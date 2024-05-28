@@ -8,6 +8,9 @@ import Cau_2.BUS.BenhNhanBUS;
 import Cau_2.BUS.KhamBenhBUS;
 import Cau_2.BUS.ThuPhiBUS;
 import Cau_2.DTO.KhamBenhDTO;
+import Cau_2.DTO.ThuPhiDTO;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -15,9 +18,11 @@ import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -66,6 +71,17 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                 }
             }
         });
+        
+        checkbox_dathanhtoan.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    btn_thanhtoan.setEnabled(false);
+                } else {
+                    btn_thanhtoan.setEnabled(true);
+                }
+            }
+        });
     }
     
     
@@ -75,6 +91,7 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         if (tenbn != null) {
             txt_tenbn.setText(tenbn);
             txt_tenbn.setEditable(false);
+            hienThiThongTinKB();
         }
         else {
             JOptionPane.showMessageDialog(null, "Bệnh nhân chưa đăng ký", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -83,17 +100,46 @@ public class ThanhToanGUI extends javax.swing.JFrame {
     }
     
     public void hienThiThongTinKB() throws SQLException{
-        LocalDate ngKham = date_nkham.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+         LocalDate ngKham = LocalDate.of(1950, 1, 1);
+        if (date_nkham.getDate() != null){
+            ngKham = date_nkham.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
         makb = khamBenhBUS.layMaKB(mabn, ngKham);
         KhamBenhDTO khamBenhDTO = khamBenhBUS.layThongTinKhamBenh(makb);
+        if (!makb.equals("")) {
+            String ketluan = khamBenhDTO.getKetLuan();
+            String yckham = khamBenhDTO.getYCKham();
+            txt_ketluan.setText(ketluan);
+            txt_yckham.setText(yckham);
+            int tongTien = thuPhiBUS.layTongTien(makb);
+            txt_tongtien.setText(Integer.toString(tongTien));
+        }
+        else {
+            txt_ketluan.setText("");
+            txt_yckham.setText("");
+            txt_tongtien.setText("");
+        }
         
-        String ketluan = khamBenhDTO.getKetLuan();
-        String yckham = khamBenhDTO.getYCKham();
-        txt_ketluan.setText(ketluan);
-        txt_yckham.setText(yckham);
+        if (khamBenhBUS.isThanhToan(makb)){
+            checkbox_dathanhtoan.setSelected(true);
+        } else {
+            checkbox_dathanhtoan.setSelected(false);
+        }
         
-        int tongTien = thuPhiBUS.layTongTien(makb);
-        txt_tongtien.setText(Integer.toString(tongTien));
+        updateTable();
+    }
+    
+    public void updateTable() throws SQLException{
+        DefaultTableModel tb_dsdv_dakham = (DefaultTableModel) table_dsdv_dakham.getModel();
+        tb_dsdv_dakham.setRowCount(0);
+        
+        List<ThuPhiDTO> dsThuPhi = thuPhiBUS.layDichVu(makb);
+        for (ThuPhiDTO tp : dsThuPhi) {
+            tb_dsdv_dakham.addRow(new String[]{
+                tp.getTenDV(), 
+                String.valueOf(tp.getSoLuong()), 
+                String.valueOf(tp.getThanhTien())});
+        }
     }
     
 
@@ -112,15 +158,15 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         lb_yckham = new javax.swing.JLabel();
         lb_kluan = new javax.swing.JLabel();
         txt_yckham = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btn_thanhtoan = new javax.swing.JButton();
         date_nkham = new com.toedter.calendar.JDateChooser();
         txt_ketluan = new javax.swing.JTextField();
         lb_dsdv_dakham = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tb_dsdv_dakham = new javax.swing.JTable();
+        table_dsdv_dakham = new javax.swing.JTable();
         lb_tongtien = new javax.swing.JLabel();
         txt_tongtien = new javax.swing.JTextField();
-        checkb_dathanhtoan = new javax.swing.JCheckBox();
+        checkbox_dathanhtoan = new javax.swing.JCheckBox();
         txt_tenbn = new javax.swing.JTextField();
         txt_mabn = new javax.swing.JTextField();
 
@@ -141,13 +187,18 @@ public class ThanhToanGUI extends javax.swing.JFrame {
         lb_kluan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_kluan.setText("Kết luận");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("Thanh toán");
+        btn_thanhtoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_thanhtoan.setText("Thanh toán");
+        btn_thanhtoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_thanhtoanActionPerformed(evt);
+            }
+        });
 
         lb_dsdv_dakham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_dsdv_dakham.setText("Danh sách dịch vụ đã khám");
 
-        tb_dsdv_dakham.setModel(new javax.swing.table.DefaultTableModel(
+        table_dsdv_dakham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -155,13 +206,13 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                 "Tên dịch vụ", "Số lượng", "Thành tiền"
             }
         ));
-        jScrollPane1.setViewportView(tb_dsdv_dakham);
+        jScrollPane1.setViewportView(table_dsdv_dakham);
 
         lb_tongtien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_tongtien.setText("Tổng tiền");
 
-        checkb_dathanhtoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        checkb_dathanhtoan.setText("Đã thanh toán");
+        checkbox_dathanhtoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        checkbox_dathanhtoan.setText("Đã thanh toán");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,7 +229,7 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lb_dsdv_dakham)
                                 .addGap(149, 149, 149)
-                                .addComponent(checkb_dathanhtoan, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(checkbox_dathanhtoan, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lb_mabn)
@@ -202,7 +253,7 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                         .addGap(20, 20, 20))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(172, 172, 172)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_thanhtoan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -231,17 +282,33 @@ public class ThanhToanGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_dsdv_dakham)
-                    .addComponent(checkb_dathanhtoan))
+                    .addComponent(checkbox_dathanhtoan))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_thanhtoan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_thanhtoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thanhtoanActionPerformed
+        int luaChon = JOptionPane.showConfirmDialog(
+				this, 
+				"Xác nhận thanh toán?",
+				"Exit",
+				JOptionPane.YES_NO_OPTION);
+            if (luaChon == JOptionPane.YES_OPTION) {
+                try {
+                    khamBenhBUS.updateThanhToan(makb);
+                    checkbox_dathanhtoan.setSelected(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ThanhToanGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }//GEN-LAST:event_btn_thanhtoanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,9 +353,9 @@ public class ThanhToanGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox checkb_dathanhtoan;
+    private javax.swing.JButton btn_thanhtoan;
+    private javax.swing.JCheckBox checkbox_dathanhtoan;
     private com.toedter.calendar.JDateChooser date_nkham;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lb_dsdv_dakham;
     private javax.swing.JLabel lb_kluan;
@@ -297,7 +364,7 @@ public class ThanhToanGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lb_tenbn;
     private javax.swing.JLabel lb_tongtien;
     private javax.swing.JLabel lb_yckham;
-    private javax.swing.JTable tb_dsdv_dakham;
+    private javax.swing.JTable table_dsdv_dakham;
     private javax.swing.JTextField txt_ketluan;
     private javax.swing.JTextField txt_mabn;
     private javax.swing.JTextField txt_tenbn;

@@ -133,8 +133,6 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
         
         tb_dsdvChonModel = (DefaultTableModel) table_dsdv_chon.getModel();
         tb_dsdvChonModel.setRowCount(0);
-        
-        System.out.println("----clear");
     }
     
     public void layMaBS() throws SQLException{
@@ -149,7 +147,6 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
             this.mabn = khamBenhBUS.layMaBN(mabs, ngKham, tenbn);
         }
     }
-    
     
     public void loadDSBenhNhan() throws SQLException {
         ngKham = date_nkham.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -382,7 +379,7 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
             }
             int soluong = entry.getValue();
             int thanhTien = donGia * soluong;
-            ThuPhiDTO tp = new ThuPhiDTO(makb, madv, soluong, thanhTien);
+            ThuPhiDTO tp = new ThuPhiDTO(madv, soluong, thanhTien);
             ThuPhiBUS bus = new ThuPhiBUS();
             
             try {
@@ -419,18 +416,15 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
     public void clearChiTietKhamBenh() throws SQLException{
         txt_ketluan.setText("");
         txt_yckham.setText("");
-        date_nkham.setDate(null);
         combo_tenbs.setSelectedIndex(0);
         combo_tenbn.setSelectedIndex(-1);
         dsBenhNhan.clear();
         dsDichVu.clear();
         dsDichVuChon.clear();
         setTableDV();
-        
         mabs = null;
         makb = null;
         mabn = null;
-        ngKham = null;
     }
     /**
      * @param args the command line arguments

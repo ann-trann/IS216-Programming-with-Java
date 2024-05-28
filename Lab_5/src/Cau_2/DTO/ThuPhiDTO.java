@@ -11,16 +11,23 @@ package Cau_2.DTO;
 public class ThuPhiDTO {
     private String MaKB;
     private String MaDV;
-    private int soLuong;
+    private String TenDV;
+    private int SoLuong;
     private int ThanhTien;
 
     public ThuPhiDTO() {
     }
 
-    public ThuPhiDTO(String MaKB, String MaDV, int soLuong, int ThanhTien) {
+    public ThuPhiDTO(String MaKB, String MaDV, int SoLuong, int ThanhTien) {
         this.MaKB = MaKB;
         this.MaDV = MaDV;
-        this.soLuong = soLuong;
+        this.SoLuong = SoLuong;
+        this.ThanhTien = ThanhTien;
+    }
+
+    public ThuPhiDTO(String TenDV, int SoLuong, int ThanhTien) {
+        this.TenDV = TenDV;
+        this.SoLuong = SoLuong;
         this.ThanhTien = ThanhTien;
     }
 
@@ -40,12 +47,20 @@ public class ThuPhiDTO {
         this.MaDV = MaDV;
     }
 
-    public int getSoLuong() {
-        return soLuong;
+    public String getTenDV() {
+        return TenDV;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setTenDV(String TenDV) {
+        this.TenDV = TenDV;
+    }
+
+    public int getSoLuong() {
+        return SoLuong;
+    }
+
+    public void setSoLuong(int SoLuong) {
+        this.SoLuong = SoLuong;
     }
 
     public int getThanhTien() {
@@ -55,4 +70,8 @@ public class ThuPhiDTO {
     public void setThanhTien(int ThanhTien) {
         this.ThanhTien = ThanhTien;
     }
+    
+    
+
+    
 }
