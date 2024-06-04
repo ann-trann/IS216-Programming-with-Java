@@ -4,10 +4,8 @@
  */
 package Cau_2.DAO;
 
-import Cau_2.DTO.DichVuDTO;
 import Cau_2.DTO.ThuPhiDTO;
 import Cau_2.connection.OracleConnection;
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

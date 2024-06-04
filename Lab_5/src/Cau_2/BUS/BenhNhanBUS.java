@@ -6,10 +6,6 @@ package Cau_2.BUS;
 
 import Cau_2.DAO.BenhNhanDAO;
 import Cau_2.DTO.BenhNhanDTO;
-import Cau_2.connection.OracleConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**

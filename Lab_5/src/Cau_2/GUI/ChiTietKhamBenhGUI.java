@@ -9,12 +9,6 @@ import Cau_2.BUS.DichVuBUS;
 import Cau_2.BUS.KhamBenhBUS;
 import Cau_2.BUS.ThuPhiBUS;
 import Cau_2.DTO.ThuPhiDTO;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -34,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
 
-    private KhamBenhBUS khamBenhBUS;
+    private final KhamBenhBUS khamBenhBUS;
     private final BacSiBUS bacSiBUS;
     private final DichVuBUS dichVuBUS;
     private final ThuPhiBUS thuPhiBUS;
@@ -61,58 +55,6 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
         setTitle("Khám bệnh");
         loadTenBS();
         setTableDV();
-        
-        date_nkham.getDateEditor().addPropertyChangeListener(
-        new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent e) {
-                if ("date".equals(e.getPropertyName())) {
-                    try {
-                        loadDSBenhNhan();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ChiTietKhamBenhGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
-        
-        combo_tenbn.addActionListener(new ActionListener() {
-        @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    layMaBN();
-                    String selectedBN = (String) combo_tenbn.getSelectedItem();
-                    if (selectedBN != null && !selectedBN.isEmpty()) {
-                        makb = khamBenhBUS.layMaKB(mabn, ngKham);
-                        String yeuCauKham = khamBenhBUS.layYeuCauKham(makb);
-                        txt_yckham.setText(yeuCauKham);
-                        txt_yckham.setEditable(false);
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        
-        dsDichVuChon= new HashMap<>();
-        table_dsdv.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int selectedRow = table_dsdv.getSelectedRow();
-                    if (selectedRow != -1) {
-                        String dichVuChon = (String) tb_dsdvModel.getValueAt(selectedRow, 0);
-                        String soluong = JOptionPane.showInputDialog("Nhap so luong cho " + dichVuChon);
-                        if (soluong != null && !soluong.isEmpty()) {
-                            tb_dsdvChonModel.addRow(new Object[]{dichVuChon, soluong});
-                            tb_dsdvModel.removeRow(selectedRow);
-                            dsDichVuChon.put(dichVuChon, Integer.valueOf(soluong));
-                        }
-                    }
-                }
-            }
-        });
     }
     
     public final void loadTenBS() throws SQLException {
@@ -133,6 +75,8 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
         
         tb_dsdvChonModel = (DefaultTableModel) table_dsdv_chon.getModel();
         tb_dsdvChonModel.setRowCount(0);
+        
+        dsDichVuChon= new HashMap<>();
     }
     
     public void layMaBS() throws SQLException{
@@ -214,7 +158,18 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
             }
         });
 
+        date_nkham.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                date_nkhamPropertyChange(evt);
+            }
+        });
+
         combo_tenbn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        combo_tenbn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_tenbnActionPerformed(evt);
+            }
+        });
 
         lb_dsdv.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb_dsdv.setText("Danh sách dịch vụ");
@@ -236,6 +191,11 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        table_dsdv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_dsdvMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(table_dsdv);
@@ -412,6 +372,47 @@ public class ChiTietKhamBenhGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btn_khamActionPerformed
+
+    private void date_nkhamPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_date_nkhamPropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            try {
+                loadDSBenhNhan();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietKhamBenhGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }   
+    }//GEN-LAST:event_date_nkhamPropertyChange
+
+    private void combo_tenbnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_tenbnActionPerformed
+        try {
+            layMaBN();
+            String selectedBN = (String) combo_tenbn.getSelectedItem();
+            if (selectedBN != null && !selectedBN.isEmpty()) {
+                makb = khamBenhBUS.layMaKB(mabn, ngKham);
+                String yeuCauKham = khamBenhBUS.layYeuCauKham(makb);
+                txt_yckham.setText(yeuCauKham);
+                txt_yckham.setEditable(false);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_combo_tenbnActionPerformed
+
+    private void table_dsdvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_dsdvMouseClicked
+        if (evt.getClickCount() == 2) {
+            int selectedRow = table_dsdv.getSelectedRow();
+            if (selectedRow != -1) {
+                String dichVuChon = (String) tb_dsdvModel.getValueAt(selectedRow, 0);
+                String soluong = JOptionPane.showInputDialog("Nhập số lượng cho " + dichVuChon);
+                if (soluong != null && soluong.matches("-?\\d+(\\.\\d+)?")) {
+                    tb_dsdvChonModel.addRow(new Object[]{dichVuChon, soluong});
+                    tb_dsdvModel.removeRow(selectedRow);
+                    dsDichVuChon.put(dichVuChon, Integer.valueOf(soluong));
+                }
+            }
+        }
+    }//GEN-LAST:event_table_dsdvMouseClicked
 
     public void clearChiTietKhamBenh() throws SQLException{
         txt_ketluan.setText("");

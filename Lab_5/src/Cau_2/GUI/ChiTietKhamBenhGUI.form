@@ -189,6 +189,9 @@
       </Events>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="date_nkham">
+      <Events>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="date_nkhamPropertyChange"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="combo_tenbn">
       <Properties>
@@ -199,6 +202,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combo_tenbnActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -248,6 +254,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="table_dsdvMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

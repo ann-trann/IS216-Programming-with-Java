@@ -7,7 +7,6 @@ package Cau_1.view;
 import Cau_1.controller.SignUp_SIgnIn_Controller;
 import Cau_1.model.ModelUser;
 import javax.swing.JOptionPane;
-import java.sql.SQLException;
 
 /**
  *
